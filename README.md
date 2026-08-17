@@ -24,25 +24,25 @@
 
 ## 🖥️ Screenshots
 
-> Screenshots will be added here after the project screenshots are uploaded to the repository.
+### Main Chat
+
+![Chat Interface](Screenshots/Chat%20Interface.png)
 
 ### Login
 
-![Login](screenshots/login.png)
+![Login](Screenshots/login.png)
 
 ### Sign Up
 
-![Sign Up](screenshots/signup.png)
-
-### Main Chat
-
-![Chat Interface](screenshots/chat.png)
+![Sign Up](Screenshots/signup.png)
 
 ### Profile
 
-![Profile](screenshots/profile.png)
+![Profile](Screenshots/Profile.png)
 
 ---
+
+
 
 ## 🏗️ Project Architecture
 
