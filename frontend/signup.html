@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Create account — Sizzi AI Agent</title>
+<link rel="stylesheet" href="css/style.css" />
+<link rel="stylesheet" href="css/auth.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+</head>
+<body class="auth-body">
+  <header class="auth-header">
+    <span class="brand" aria-label="Sizzi AI Agent">
+      <span class="brand-mark" aria-hidden="true">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+          <path d="M12 2 L21 7 L21 17 L12 22 L3 17 L3 7 Z" stroke="var(--accent)" stroke-width="1.5"/>
+          <circle cx="12" cy="12" r="3.3" fill="var(--accent)"/>
+        </svg>
+      </span>
+      <span class="brand-name">Sizzi AI Agent</span>
+    </span>
+    <button id="themeToggleBtn" class="icon-btn" type="button" aria-label="Switch to light mode" title="Switch to light mode">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+        <path d="M13.6 3.5A6.8 6.8 0 0 0 8.2 16.3 7.3 7.3 0 0 1 13.6 3.5Z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/>
+      </svg>
+    </button>
+  </header>
+
+  <main class="auth-shell">
+    <div class="auth-card">
+      <span class="auth-mark" aria-hidden="true">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+          <path d="M12 2 L21 7 L21 17 L12 22 L3 17 L3 7 Z" stroke="var(--accent)" stroke-width="1.4"/>
+          <circle cx="12" cy="12" r="3.4" fill="var(--accent)"/>
+        </svg>
+      </span>
+      <h1 class="auth-title">Create your account</h1>
+      <p class="auth-subtitle">Get started with Sizzi AI Agent.</p>
+
+      <div class="auth-demo-note">
+        <svg width="15" height="15" viewBox="0 0 15 15" fill="none" aria-hidden="true"><circle cx="7.5" cy="7.5" r="6.5" stroke="currentColor" stroke-width="1.2"/><path d="M7.5 4.6v3.4M7.5 10.4v.1" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+        <span>Create your account to get started with Sizzi AI Agent.</span>
+      </div>
+
+      <div id="formBanner" class="auth-form-banner error" hidden></div>
+
+      <form id="signupForm" novalidate>
+        <div class="field-group">
+          <label class="field-label" for="signupName">Name</label>
+          <div class="field-input-wrap">
+            <input class="field-input" type="text" id="signupName" name="name" placeholder="Adarsh Sharma" autocomplete="name" required />
+          </div>
+          <p class="field-error" id="signupNameError"></p>
+        </div>
+
+        <div class="field-group">
+          <label class="field-label" for="signupEmail">Email</label>
+          <div class="field-input-wrap">
+            <input class="field-input" type="email" id="signupEmail" name="email" placeholder="you@example.com" autocomplete="email" required />
+          </div>
+          <p class="field-error" id="signupEmailError"></p>
+        </div>
+
+        <div class="field-group">
+          <label class="field-label" for="signupAvatar">Avatar (optional)</label>
+          <div class="field-input-wrap">
+            <input class="field-input" type="file" id="signupAvatar" name="avatar" accept="image/*" />
+          </div>
+          <p class="field-error" id="signupAvatarError"></p>
+        </div>
+
+        <div class="field-group">
+          <label class="field-label" for="signupPassword">Password</label>
+          <div class="field-input-wrap">
+            <input class="field-input has-toggle" type="password" id="signupPassword" name="password" placeholder="At least 8 characters" autocomplete="new-password" required />
+            <button type="button" class="field-toggle-visibility" data-toggle-for="signupPassword" aria-label="Show password">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M1 8s2.6-4.6 7-4.6S15 8 15 8s-2.6 4.6-7 4.6S1 8 1 8Z" stroke="currentColor" stroke-width="1.2"/><circle cx="8" cy="8" r="2" stroke="currentColor" stroke-width="1.2"/></svg>
+            </button>
+          </div>
+          <div class="password-strength" id="passwordStrength" aria-hidden="true">
+            <span class="password-strength-bar"></span>
+            <span class="password-strength-bar"></span>
+            <span class="password-strength-bar"></span>
+          </div>
+          <p class="password-strength-label" id="passwordStrengthLabel">Use 8+ characters</p>
+          <p class="field-error" id="signupPasswordError"></p>
+        </div>
+
+        <div class="field-group">
+          <label class="field-label" for="signupConfirmPassword">Confirm Password</label>
+          <div class="field-input-wrap">
+            <input class="field-input has-toggle" type="password" id="signupConfirmPassword" name="confirmPassword" placeholder="Re-enter your password" autocomplete="new-password" required />
+            <button type="button" class="field-toggle-visibility" data-toggle-for="signupConfirmPassword" aria-label="Show password">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M1 8s2.6-4.6 7-4.6S15 8 15 8s-2.6 4.6-7 4.6S1 8 1 8Z" stroke="currentColor" stroke-width="1.2"/><circle cx="8" cy="8" r="2" stroke="currentColor" stroke-width="1.2"/></svg>
+            </button>
+          </div>
+          <p class="field-error" id="signupConfirmPasswordError"></p>
+        </div>
+
+        <label class="checkbox-row" style="margin-bottom:18px;">
+          <input type="checkbox" id="agreeTerms" required />
+          I agree to the Terms of Service and Privacy Policy
+        </label>
+
+        <button class="auth-submit" type="submit" id="signupSubmit">
+          <svg width="15" height="15" viewBox="0 0 15 15" fill="none" aria-hidden="true"><circle cx="7.5" cy="7.5" r="6" stroke="currentColor" stroke-width="1.6" stroke-dasharray="28" stroke-dashoffset="10"/></svg>
+          <span class="auth-submit-label">Create Account</span>
+        </button>
+      </form>
+
+      <div class="auth-divider">OR</div>
+
+      <button class="oauth-btn" type="button" id="googleOauthBtn">
+        <svg width="16" height="16" viewBox="0 0 16 16"><path fill="#4285F4" d="M15.7 8.18c0-.57-.05-1.11-.14-1.64H8v3.1h4.3c-.19 1-.75 1.85-1.6 2.42v2h2.6c1.52-1.4 2.4-3.46 2.4-5.88Z"/><path fill="#34A853" d="M8 16c2.16 0 3.97-.72 5.3-1.94l-2.6-2c-.72.48-1.64.77-2.7.77-2.08 0-3.84-1.4-4.47-3.29H.83v2.07A8 8 0 0 0 8 16Z"/><path fill="#FBBC05" d="M3.53 9.54A4.8 4.8 0 0 1 3.28 8c0-.54.09-1.06.25-1.54V4.4H.83A8 8 0 0 0 0 8c0 1.29.31 2.5.83 3.6l2.7-2.06Z"/><path fill="#EA4335" d="M8 3.18c1.18 0 2.23.4 3.06 1.2l2.3-2.3C11.96.87 10.15 0 8 0A8 8 0 0 0 .83 4.4l2.7 2.06C4.16 4.58 5.92 3.18 8 3.18Z"/></svg>
+        Continue with Google
+      </button>
+
+      <p class="auth-footer-text">Already have an account? <a href="login.html">Sign in</a></p>
+    </div>
+  </main>
+
+<script src="js/auth.js"></script>
+</body>
+</html>

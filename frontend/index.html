@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sizzi AI Agent</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <div class="app-shell">
+    <header class="app-header">
+      <div class="header-left">
+        <button id="sidebarToggle" class="icon-btn sidebar-toggle" aria-label="Toggle conversation sidebar" aria-expanded="true" type="button">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+            <path d="M3 5h14M3 10h14M3 15h14" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+          </svg>
+        </button>
+
+        <div class="brand" aria-label="Sizzi AI Agent brand">
+          <span class="brand-mark" aria-hidden="true">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+              <path d="M12 2 L21 7 L21 17 L12 22 L3 17 L3 7 Z" stroke="var(--accent)" stroke-width="1.5"/>
+              <circle cx="12" cy="12" r="3.3" fill="var(--accent)"/>
+            </svg>
+          </span>
+          <div class="brand-text">
+            <span class="brand-name">Sizzi</span>
+            <span class="brand-tag">AI Agent</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="header-right">
+        <button id="newChatHeaderBtn" class="btn btn-primary header-new-chat" type="button">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+          </svg>
+          <span>New Chat</span>
+        </button>
+        <button id="themeToggleBtn" class="icon-btn" type="button" aria-label="Switch to light mode" title="Switch to light mode">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+            <path d="M13.6 3.5A6.8 6.8 0 0 0 8.2 16.3 7.3 7.3 0 0 1 13.6 3.5Z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/>
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <div class="app-body">
+      <aside class="sidebar" id="sidebar" aria-label="Conversation history">
+        <button id="newChatSidebarBtn" class="new-convo-btn" type="button">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+          </svg>
+          New Chat
+        </button>
+
+        <nav class="convo-list-wrap">
+          <p class="convo-list-label">Recent</p>
+          <ul id="convoList" class="convo-list" role="list"></ul>
+          <p id="convoEmptyState" class="convo-empty">No conversations yet</p>
+        </nav>
+
+        <div class="sidebar-divider"></div>
+
+        <div class="sidebar-status">
+          <div class="status-row">
+            <span class="status-row-label">
+              <svg width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true"><path d="M6.5 1v3.2M6.5 8.8V12M1 6.5h3.2M8.8 6.5H12" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+              Backend
+            </span>
+            <span id="connectionStatus" class="status-pill status-unknown">
+              <span class="status-dot" aria-hidden="true"></span>
+              <span id="connectionStatusText">Checking…</span>
+            </span>
+          </div>
+          <div class="status-row">
+            <span class="status-row-label">Agent</span>
+            <span id="agentStatus" class="status-pill status-unknown">
+              <span class="status-dot" aria-hidden="true"></span>
+              <span id="agentStatusText">Idle</span>
+            </span>
+          </div>
+        </div>
+
+        <div class="account-area">
+          <button id="accountTrigger" class="account-trigger" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="accountMenu">
+            <span class="account-avatar" id="accountAvatar" aria-hidden="true">A</span>
+            <span class="account-meta">
+              <span class="account-name" id="accountName">Account</span>
+              <span class="account-plan" id="accountPlan">Free Plan</span>
+            </span>
+            <svg class="account-chevron" width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+              <path d="M3.5 5.25 7 8.75l3.5-3.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+
+          <div class="account-menu" id="accountMenu" role="menu" hidden>
+            <button class="account-menu-item" role="menuitem" type="button" data-action="profile">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM2.5 14a5.5 5.5 0 0 1 11 0" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Profile
+            </button>
+            <button class="account-menu-item" role="menuitem" type="button" data-action="settings">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 10.2a2.2 2.2 0 1 0 0-4.4 2.2 2.2 0 0 0 0 4.4Z" stroke="currentColor" stroke-width="1.3"/><path d="M13 8.6v-1.2l-1.4-.3a4.4 4.4 0 0 0-.5-1.2l.8-1.2-.9-.9-1.2.8a4.4 4.4 0 0 0-1.2-.5L8.3 3H7l-.3 1.4c-.4.1-.8.3-1.2.5l-1.2-.8-.9.9.8 1.2c-.2.4-.4.8-.5 1.2L2.3 7.4v1.2l1.4.3c.1.4.3.8.5 1.2l-.8 1.2.9.9 1.2-.8c.4.2.8.4 1.2.5l.3 1.4h1.3l.3-1.4c.4-.1.8-.3 1.2-.5l1.2.8.9-.9-.8-1.2c.2-.4.4-.8.5-1.2l1.4-.3Z" stroke="currentColor" stroke-width="1.1" stroke-linejoin="round"/></svg>
+              Settings
+            </button>
+            <button class="account-menu-item" role="menuitem" type="button" data-action="appearance">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 1.5v2M8 12.5v2M2.6 2.6l1.4 1.4M12 12l1.4 1.4M1.5 8h2M12.5 8h2M2.6 13.4 4 12M12 4l1.4-1.4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><circle cx="8" cy="8" r="2.6" stroke="currentColor" stroke-width="1.3"/></svg>
+              Appearance
+            </button>
+            <button class="account-menu-item" role="menuitem" type="button" data-action="help">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.2" stroke="currentColor" stroke-width="1.3"/><path d="M6.2 6.2a1.8 1.8 0 1 1 2.7 1.6c-.6.4-.9.7-.9 1.4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><circle cx="8" cy="11.4" r="0.6" fill="currentColor"/></svg>
+              Help
+            </button>
+            <div class="account-menu-divider"></div>
+            <button class="account-menu-item danger" role="menuitem" type="button" data-action="signout">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 14H3.6a1.1 1.1 0 0 1-1.1-1.1V3.1A1.1 1.1 0 0 1 3.6 2H6M10.8 11.3 14 8l-3.2-3.3M14 8H6" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Sign out
+            </button>
+          </div>
+        </div>
+      </aside>
+
+      <div class="sidebar-scrim" id="sidebarScrim" hidden></div>
+
+      <main class="chat-area">
+        <section id="welcomeScreen" class="welcome-screen">
+          <div class="welcome-inner">
+            <span class="welcome-mark" aria-hidden="true">
+              <svg width="44" height="44" viewBox="0 0 24 24" fill="none">
+                <path d="M12 2 L21 7 L21 17 L12 22 L3 17 L3 7 Z" stroke="var(--accent)" stroke-width="1.4"/>
+                <circle cx="12" cy="12" r="3.4" fill="var(--accent)"/>
+              </svg>
+            </span>
+            <h1 class="welcome-title">Sizzi AI Agent</h1>
+            <p class="welcome-subtitle">What can I help you with?</p>
+            <span id="welcomeReady" class="welcome-ready">
+              <svg width="8" height="8" viewBox="0 0 8 8" fill="none"><circle cx="4" cy="4" r="4" fill="currentColor"/></svg>
+              <span id="welcomeReadyText">Checking connection…</span>
+            </span>
+
+            <div class="capability-grid">
+              <button class="capability-card suggestion-card" type="button" data-prompt="Analyze this information and summarize the key points.">
+                <span class="capability-icon" aria-hidden="true">
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2.5 13.5v-4M6.2 13.5v-8M9.9 13.5V6M13.5 13.5V3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+                </span>
+                <span class="capability-title">Analyze</span>
+                <span class="capability-desc">Analyze documents, resumes and information.</span>
+              </button>
+              <button class="capability-card suggestion-card" type="button" data-prompt="Help me debug and improve this code, step by step.">
+                <span class="capability-icon" aria-hidden="true">
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M5.2 4 1.5 8l3.7 4M10.8 4l3.7 4-3.7 4M9.2 2.5l-2.4 11" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </span>
+                <span class="capability-title">Code</span>
+                <span class="capability-desc">Debug, explain and improve code.</span>
+              </button>
+              <button class="capability-card suggestion-card" type="button" data-prompt="Create a clear step-by-step plan for this task.">
+                <span class="capability-icon" aria-hidden="true">
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 4.5h10M3 8h10M3 11.5h6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+                </span>
+                <span class="capability-title">Plan</span>
+                <span class="capability-desc">Create structured plans and workflows.</span>
+              </button>
+              <button class="capability-card suggestion-card" type="button" data-prompt="Help me research this topic and organize what you find.">
+                <span class="capability-icon" aria-hidden="true">
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="7" cy="7" r="4.5" stroke="currentColor" stroke-width="1.3"/><path d="M10.3 10.3 14 14" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+                </span>
+                <span class="capability-title">Research</span>
+                <span class="capability-desc">Find and organize information.</span>
+              </button>
+              <button class="capability-card suggestion-card" type="button" data-prompt="Explain a concept to me in plain English, step by step.">
+                <span class="capability-icon" aria-hidden="true">
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 1.8a4 4 0 0 0-2 7.5c.4.3.6.6.6 1v.4h2.8v-.4c0-.4.2-.7.6-1A4 4 0 0 0 8 1.8ZM6.3 13.2h3.4M6.8 14.8h2.4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </span>
+                <span class="capability-title">Explain</span>
+                <span class="capability-desc">Break down an idea clearly.</span>
+              </button>
+              <span class="capability-card" aria-disabled="true" style="opacity:.55;cursor:default;">
+                <span class="capability-icon" aria-hidden="true">
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 1.8v2.4M8 11.8v2.4M14.2 8h-2.4M4.2 8H1.8M12.2 3.8l-1.7 1.7M5.5 10.5l-1.7 1.7M12.2 12.2l-1.7-1.7M5.5 5.5 3.8 3.8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+                </span>
+                <span class="capability-title">Automate</span>
+                <span class="capability-desc">Use tools to perform tasks — coming soon.</span>
+              </span>
+            </div>
+          </div>
+        </section>
+
+        <div id="messageLog" class="message-log" role="log" aria-live="polite" aria-label="Conversation messages" hidden></div>
+
+        <div id="agentActivity" class="agent-activity" hidden aria-live="polite">
+          <div class="agent-activity-inner">
+            <p class="activity-heading"><span class="pulse-dot" aria-hidden="true"></span>Agent Activity</p>
+            <ul class="activity-steps" id="activitySteps">
+              <li class="activity-step pending" data-step="received"><span class="step-node"></span>Request received</li>
+              <li class="activity-step pending" data-step="understanding"><span class="step-node"></span>Understanding task</li>
+              <li class="activity-step pending" data-step="processing"><span class="step-node"></span>Processing</li>
+              <li class="activity-step pending" data-step="generating"><span class="step-node"></span>Generating response</li>
+            </ul>
+          </div>
+        </div>
+
+        <div id="errorBanner" class="error-banner" role="alert" hidden>
+          <div class="error-banner-inner" id="errorBannerInner">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+              <circle cx="9" cy="9" r="7.5" stroke="var(--danger)" stroke-width="1.4"/>
+              <path d="M9 5.5v4M9 12.2v.1" stroke="var(--danger)" stroke-width="1.4" stroke-linecap="round"/>
+            </svg>
+            <div class="error-text">
+              <p class="error-title" id="errorTitle">Couldn't connect to Sizzi AI Agent</p>
+              <p class="error-desc" id="errorDesc">Make sure the FastAPI server is running.</p>
+              <div class="error-actions">
+                <button id="retryBtn" class="btn btn-secondary btn-small" type="button">Retry</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <form id="composerForm" class="composer" autocomplete="off">
+          <div class="composer-inner">
+            <div class="composer-tools">
+              <button type="button" class="icon-btn" id="attachBtn" aria-label="Attach file (coming soon)" title="File attachments — coming soon" disabled>
+                <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+                  <path d="M11.6 6.1 6.9 10.8a2 2 0 1 0 2.8 2.8l5-5a3.5 3.5 0 1 0-5-5l-5.3 5.3a5 5 0 1 0 7.1 7.1" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </button>
+            </div>
+            <label for="messageInput" class="sr-only">Message Sizzi</label>
+            <textarea
+              id="messageInput"
+              class="composer-textarea"
+              placeholder="Message Sizzi AI Agent..."
+              rows="1"
+              maxlength="4000"
+              aria-describedby="charCounter"
+            ></textarea>
+            <button id="sendBtn" class="send-btn" type="submit" aria-label="Send message" disabled>
+              <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+                <path d="M2.5 9h13M9 2.5 15.5 9 9 15.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+          </div>
+          <div class="composer-meta">
+            <span id="composerHint" class="composer-hint">Enter to send · Shift + Enter for new line</span>
+            <span id="charCounter" class="char-counter">0 / 4000</span>
+          </div>
+        </form>
+      </main>
+    </div>
+  </div>
+
+  <template id="messageTemplate">
+    <div class="message">
+      <div class="message-avatar" aria-hidden="true"></div>
+      <div class="message-body">
+        <div class="message-meta">
+          <span class="message-sender"></span>
+          <span class="message-time"></span>
+        </div>
+        <div class="message-text"></div>
+      </div>
+    </div>
+  </template>
+
+  <template id="convoItemTemplate">
+    <li class="convo-item" role="listitem">
+      <button class="convo-item-btn" type="button">
+        <span class="convo-item-title"></span>
+      </button>
+      <button class="convo-delete-btn" type="button" aria-label="Delete conversation">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+          <path d="M2.5 3.5h9M5.3 3.5V2.3a.8.8 0 0 1 .8-.8h1.8a.8.8 0 0 1 .8.8v1.2M5.8 6.3v4M8.2 6.3v4M3.4 3.5l.5 8a1 1 0 0 0 1 .9h4.2a1 1 0 0 0 1-.9l.5-8" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+    </li>
+  </template>
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/dompurify@3.1.6/dist/purify.min.js"></script>
+
+<script src="js/auth.js"></script>
+
+<script>
+  if (!SizziAuth.requireAuth()) {
+    throw new Error("Authentication required.");
+  }
+</script>
+
+<script src="js/script.js"></script>
+
+<!-- Profile Modal -->
+<div id="profileModal" class="profile-modal" hidden>
+  <div class="profile-modal-overlay" id="profileModalOverlay"></div>
+
+  <div class="profile-modal-card">
+    <button
+      type="button"
+      class="profile-modal-close"
+      id="profileModalClose"
+      aria-label="Close profile"
+    >
+      ×
+    </button>
+
+    <div class="profile-modal-avatar" id="profileModalAvatar">G</div>
+
+    <h2 id="profileModalName">Guest</h2>
+    <p id="profileModalEmail">Not available</p>
+
+    <div class="profile-info">
+      <div class="profile-info-row">
+        <span>Plan</span>
+        <strong>Free Plan</strong>
+      </div>
+
+      <div class="profile-info-row">
+        <span>Account</span>
+        <strong>Active</strong>
+      </div>
+    </div>
+
+    <button type="button" class="btn btn-primary btn-block" id="profileModalDone">
+      Done
+    </button>
+  </div>
+</div>
+
+<!-- Settings Modal -->
+<div id="settingsModal" class="settings-modal" hidden>
+  <div class="settings-modal-overlay" id="settingsModalOverlay"></div>
+
+  <div class="settings-modal-card">
+    <button
+      type="button"
+      class="profile-modal-close"
+      id="settingsModalClose"
+      aria-label="Close settings"
+    >
+      ×
+    </button>
+
+    <div class="profile-modal-avatar" aria-hidden="true">⚙</div>
+
+    <h2>Settings</h2>
+    <p>Customize how SIZZI behaves for your workspace.</p>
+
+    <div class="profile-info">
+      <button type="button" class="profile-info-row settings-theme-row" id="settingsThemeToggle" aria-label="Toggle appearance">
+        <span>Appearance</span>
+        <strong id="settingsThemeLabel">Dark</strong>
+      </button>
+
+      <div class="profile-info-row">
+        <span>Chat history</span>
+        <strong>Saved locally</strong>
+      </div>
+
+      <div class="profile-info-row">
+        <span>Backend</span>
+        <strong>Local API</strong>
+      </div>
+    </div>
+
+    <button type="button" class="btn btn-primary btn-block" id="settingsModalDone">
+      Done
+    </button>
+  </div>
+</div>
+
+<!-- Help Modal -->
+<div id="helpModal" class="help-modal" hidden>
+  <div class="help-modal-overlay" id="helpModalOverlay"></div>
+
+  <div class="help-modal-card">
+    <button
+      type="button"
+      class="profile-modal-close"
+      id="helpModalClose"
+      aria-label="Close help"
+    >
+      ×
+    </button>
+
+    <div class="profile-modal-avatar" aria-hidden="true">?</div>
+
+    <h2>Help</h2>
+    <p>Quick tips for using SIZZI effectively.</p>
+
+    <div class="help-list">
+      <div class="help-item"><strong>New chat:</strong> Start a fresh conversation from the sidebar.</div>
+      <div class="help-item"><strong>Send a message:</strong> Type in the composer and press Enter or click the send button.</div>
+      <div class="help-item"><strong>Stop generation:</strong> Use the stop button while the agent is responding.</div>
+      <div class="help-item"><strong>Switch conversations:</strong> Select a different thread from the sidebar.</div>
+      <div class="help-item"><strong>Change appearance:</strong> Use the theme toggle in the account menu.</div>
+      <div class="help-item"><strong>Access Profile:</strong> Open the account menu and select Profile.</div>
+    </div>
+
+    <button type="button" class="btn btn-primary btn-block" id="helpModalDone">
+      Done
+    </button>
+  </div>
+</div>
+</body>
+</html>
